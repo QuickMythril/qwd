@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>JSON to Table</title>
+	<style>
+		body {
+			background-color: #0b305e;
+			color: #008fd5;
+		}
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		th, td {
+			text-align: left;
+			padding: 8px;
+			color: #0b305e;
+		}
+		th {
+			cursor: pointer;
+		}
+		th:hover {
+			background-color: #0b305e;
+			color: #008fd5;
+		}
+		tr:nth-child(even) {
+			background-color: #008fd5;
+		}
+		tr:nth-child(odd) {
+			background-color: #586b8d;
+		}
+		td:nth-child(4) {
+			text-align: end;
+		}
+	</style>
+</head>
+<body>
+	<div id="myCount">You found Websites hosted live on QDN!</div><br />
+	<table id="myTable">
+		<thead>
+			<tr>
+				<th onclick="sortTable(0)">Registered Name</th>
+				<th onclick="sortTable(1)">Website Title</th>
+				<th onclick="sortTable(2)">(Notes)</th>
+				<th onclick="sortTable(3)">Size(Mb)</th>
+				<th onclick="sortTable(4)">Description</th>
+				<th onclick="sortTable(5)">Category</th>
+				<th onclick="sortTable(6)">Tags</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Table rows will be generated dynamically using JavaScript -->
+			<tr><td>Loading...</td></tr>
+		</tbody>
+	</table>
+
+	<script>
+		var notesLastUpdated = '2023-02-20';
+		// Make an AJAX request to the API endpoint
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				// Parse the response data as JSON
+				var data = JSON.parse(this.responseText);
+					
+				// Create the table rows using the response data
+				var table = document.getElementById("myTable");
+				for (var i = 0; i < data.length; i++) {
+					var row = table.insertRow(i + 1);
+					var nameCell = row.insertCell(0);
+					var titleCell = row.insertCell(1);
+					var notesCell = row.insertCell(2);
+					var sizeCell = row.insertCell(3);
+					var descriptionCell = row.insertCell(4);
+					var categoryCell = row.insertCell(5);
+					var tagsCell = row.insertCell(6);
+					nameCell.innerHTML = '<a href="qortal://WEBSITE/' + data[i].name + '">' + data[i].name + '</a>';
+					titleCell.innerHTML = data[i].metadata ? (data[i].metadata.title || '&#xffffff;') : '&#xffffff;';
+					notesCell.innerHTML = '&#xffffff;';
+					sizeCell.innerHTML = (data[i].size / 1048576).toFixed(2);
+					descriptionCell.innerHTML = data[i].metadata ? (data[i].metadata.description || '&#xffffff;') : '&#xffffff;';
+					categoryCell.innerHTML = data[i].metadata ? (data[i].metadata.categoryName || '&#xffffff;') : '&#xffffff;';
+					tagsCell.innerHTML = data[i].metadata ? (data[i].metadata.tags ? data[i].metadata.tags.join(', ') : '&#xffffff;') : '&#xffffff;';
+					var sizeR = 143 + (((data[i].size / 1048576) / 400) * 97);
+					var sizeG = 188 - (((data[i].size / 1048576) / 400) * 60);
+					var sizeB = 143 - (((data[i].size / 1048576) / 400) * 15);
+					row.cells[3].style.backgroundColor = "rgb(" + sizeR + ", " + sizeG + ", " + sizeB + ")";
+					switch (data[i].name) {
+						// Informational page
+						case '... Playing Qortal ...':
+						case '7R15M3G157U5':
+						case 'Alchemical1':
+						case 'At Home In The Wilderness':
+						case 'bee':
+						case 'beebutler':
+						case 'bitBucket':
+						case 'Brederic':
+						case 'Chris':
+						case 'crowetic':
+						case 'Deleted User':
+						case 'Dreaming_Loudly':
+						case 'Eike':
+						case 'El Paraiso':
+						case 'EMF':
+						case 'Extreme Privacy':
+						case 'Free World Library':
+						case 'FreeEnergy':
+						case 'FueRmOS':
+						case 'Gaia\'s Garden':
+						case 'HFactor':
+						case 'IHerebySecede':
+						case 'IsBe':
+						case 'isoulove':
+						case 'Jason':
+						case 'joeyp':
+						case 'kevtang':
+						case 'Library under the Sphinx':
+						case 'Library 📚':
+						case 'living seed library':
+						case 'Magick':
+						case 'Matrix':
+						case 'Mesh Network':
+						case 'MidFest':
+						case 'MintMeister':
+						case 'mobilefabrik':
+						case 'movie round table':
+						case 'Mugician':
+						case 'Number1':
+						case 'Pigpig105':
+						case 'Pipboy3000':
+						case 'Qortal Quick Start Guide (Unofficial)':
+						case 'QortalDemo':
+						case 'QortalWikiDemo':
+						case 'Qortosphere':
+						case 'regenerative agriculture':
+						case 'Resources':
+						case 'RicksRadio':
+						case 'Rocket Stove':
+						case 'rorfun':
+						case 'satoshi nakamoto':
+						case 'Scare Crowe':
+						case 'SeedLife':
+						case 'ShearMadness':
+						case 'SixofClubs':
+						case 'SoC':
+						case 'solar oven':
+						case 'Sun Baked Cookies':
+						case 'The Crow House':
+						case 'thebible':
+						case 'Throbbing Gristle':
+						case 'video round table':
+						case 'Wellsir':
+						case 'YOW-Freedom':
+						case 'Zen432':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Info';
+							break;
+						// Empty page / placeholder
+						case '.ZZWrap':
+						case 'a-nonny-mouse':
+						case 'A2 Earth core numbers':
+						case 'After Effects':
+						case 'AK 47_7_7':
+						case 'AlphaX':
+						case 'Bago':
+						case 'Basic':
+						case 'Bored Ape Jason Crowe':
+						case 'breakfix':
+						case 'Carefree':
+						case 'Carrie Triffet':
+						case 'ChaacEnergy':
+						case 'Crypto-Verse':
+						case 'Demo':
+						case 'devin0xffffff':
+						case 'Doctor Who':
+						case 'Enterprise':
+						case 'exh':
+						case 'goodplay':
+						case 'Haabda':
+						case 'honey':
+						case 'Iaminspired':
+						case 'illustrator':
+						case 'isyboii':
+						case 'Jaymen':
+						case 'jdfreshman':
+						case 'JesseGee':
+						case 'Koleda':
+						case 'Lucidian':
+						case 'MBM':
+						case 'milk':
+						case 'monion':
+						case 'PhotoShop':
+						case 'Premiere':
+						case 'psychogenic':
+						case 'psychometrics':
+						case 'qdnbuilder':
+						case 'QuickMythril':
+						case 'sccqortal':
+						case 'schizo':
+						case 'Standard':
+						case 'Stonecrow':
+						case 'Teonanacatl':
+						case 'Victor Tractor':
+						case 'Wiseman':
+						case 'Zenon':
+						case '◿◿◿':
+							row.cells[0].style.backgroundColor = "lightsalmon";
+							notesCell.innerHTML = '{Empty}';
+							break;
+						// Web-based applications, utilities, games
+						case 'ActofVision':
+						case 'Billiards':
+						case 'cnsr.lol':
+						case 'Codebase':
+						case 'Encrypt':
+						case 'Fantasia':
+						case 'Game of life':
+						case 'Globe':
+						case 'Hack Me':
+						case 'igorx':
+						case 'jacksorbetter':
+						case 'Joshua':
+						case 'Melody':
+						case 'Minecraft⛏':
+						case 'Minesweeper':
+						case 'Monero Wallet':
+						case 'Note':
+						case 'PacMan':
+						case 'Paint':
+						case 'Paper':
+						case 'Pong':
+						case 'Qortal AI':
+						case 'Qortal Snake':
+						case 'QorTetris':
+						case 'QorToshi':
+						case 'regge':
+						case 'Slot':
+						case 'Tic Tac Toe':
+						case 'Tools':
+						case 'Traxo':
+						case 'Vanymedes':
+						case 'xspektrex':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Webapp';
+							break;
+						// Service provider or merchant
+						case 'Advanta Inspections':
+						case 'AgoristMarket':
+						case 'Alan':
+						case 'angelika':
+						case 'ARRRMADA.com':
+						case 'crowetic.com':
+						case 'Esoteric Bazaar':
+						case 'falkoun':
+						case 'FNB Oxford':
+						case 'Fund Me':
+						case 'graphe-γραφή':
+						case 'incubusfinance.co.uk':
+						case 'Jacob Kenneally':
+						case 'La Casa Del Ron':
+						case 'lyynx':
+						case 'mcn':
+						case 'nazaraliev':
+						case 'ppmSilver':
+						case 'TradingHeroes':
+						case 'vibrant earth seeds':
+						case 'Websites':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Service';
+							break;
+						// Video (Movies, News, Documentaries)
+						case '9-11Trillions':
+						case 'Agenda 2030':
+						case 'archaix (archaix.com)':
+						case 'Back to the Future':
+						case 'CenturyOfEnslavement':
+						case 'Corona Investigative Committee':
+						case 'DebunkingACenturyOfWarLies':
+						case 'hopi':
+						case 'PhilosophyOfLiberty':
+						case 'TheDimming':
+						case 'TheRealAnthonyFauciMovie':
+						case 'War Is A Racket by Smedley Butler':
+						case 'www.archaix.com':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Video';
+							break;
+						// Audio (Music, Podcasts, Interviews)
+						case '1 Earth core voice':
+						case 'A1 Earth core voice':
+						case 'A3 IsBe':
+						case 'A3Podcast':
+						case 'BeyondCivilDisobedience':
+						case 'DeadWorldRadio':
+						case 'ForANewLiberty':
+						case 'Music Round Table':
+						case 'OurEnemyTheState':
+						case 'SeditionSubversionSabotage':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Audio';
+							break;
+						// Missing files
+						case 'Alien👽':
+						case 'Chief36':
+						case 'Code🛠️':
+						case 'educationworkz.com':
+						case 'HaroBlank':
+						case 'NFT 💲':
+						case 'PirateChain':
+						case 'Scope':
+						case 'Simon James':
+						case 'Theater':
+						case 'va8abond':
+						case 'Wake Up and Unplug':
+							row.cells[0].style.backgroundColor = "lightcoral";
+							notesCell.innerHTML = '{Missing}';
+							break;
+						// Non-functional webapp demonstrations
+						case '.OS':
+						case 'API 🔗':
+						case 'Card 💳':
+						case 'Chart':
+						case 'fan':
+						case 'Lab':
+						case 'NFT Market':
+						case 'NFT Marketplace':
+						case 'Parlay':
+						case 'Pirate Arrr':
+						case 'Pool':
+						case 'prototyping':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Demo';
+							break;
+						// Software homepage or download
+						case 'BBQortals':
+						case 'dReam Tables':
+						case 'pirate.black':
+						case 'piratebox.info':
+						case 'Qnect':
+						case 'ReQorder':
+							row.cells[0].style.backgroundColor = "";
+							notesCell.innerHTML = 'Software';
+							break;
+						// Failed to build
+						case 'jarooty':
+						case 'KarmaCapital':
+						case 'slower_please':
+						case 'warelock':
+						case 'Wealth':
+						case 'Xiphos':
+						case '⁤.Qortal':
+							row.cells[0].style.backgroundColor = "lightcoral";
+							notesCell.innerHTML = '{Broken}';
+							break;
+						// Adult content / Not safe for work
+						case 'fuckmo':
+							row.cells[0].style.backgroundColor = "lightcoral";
+							notesCell.innerHTML = '{Adult}';
+
+						// https://www.w3schools.com/tags/ref_colornames.asp
+					}
+				}
+				table.deleteRow(-1);
+				var count = document.getElementById("myCount");
+				count.innerHTML = 'You found ' + data.length + ' Websites hosted live on QDN!  -  Notes last updated:  ' + notesLastUpdated;
+			}
+		};
+		xhttp.open("GET", "/arbitrary/resources?service=WEBSITE&limit=0&includemetadata=true", true);
+		xhttp.send();
+
+		// Function to sort the table by the selected column
+		function sortTable(n) {
+			var table = document.getElementById("myTable");
+			var switching = true;
+			var shouldSwitch = false;
+			var dir = "asc";
+			while (switching) {
+				switching = false;
+				var rows = table.rows;
+				for (var i = 1; i < rows.length - 1; i++) {
+					var x = rows[i].getElementsByTagName("td")[n];
+					var y = rows[i + 1].getElementsByTagName("td")[n];
+					if (dir == "asc") {
+						if (isNaN(x.innerHTML)) {
+							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (Number(x.innerHTML) > Number(y.innerHTML)) {
+								shouldSwitch = true;
+								break;
+							}
+						}
+					} else if (dir == "desc") {
+						if (isNaN(x.innerHTML)) {
+							if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (Number(x.innerHTML) < Number(y.innerHTML)) {
+								shouldSwitch = true;
+								break;
+							}
+						}
+					}
+				}
+				if (shouldSwitch) {
+					rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+					switching = true;
+					i--;
+				} else {
+					if (dir == "asc") {
+						dir = "desc";
+						switching = true;
+					}
+				}
+			}
+		}
+
+	</script>
+
+</body>
+</html>
+
