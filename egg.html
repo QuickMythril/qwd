@@ -48,7 +48,7 @@
 		// Available values :
 		// AUTO_UPDATE, ARBITRARY_DATA, QCHAT_ATTACHMENT, WEBSITE, GIT_REPOSITORY, IMAGE, THUMBNAIL, QCHAT_IMAGE, VIDEO,
 		// AUDIO, QCHAT_AUDIO, QCHAT_VOICE, BLOG, BLOG_POST, BLOG_COMMENT, DOCUMENT, LIST, PLAYLIST, APP, METADATA, GIF_REPOSITORY
-		var apiCallUrl = 'http://192.168.1.101:12391/arbitrary/resources?service=THUMBNAIL&identifier=qortal_avatar&limit=0';
+		var apiCallUrl = '/arbitrary/resources?service=THUMBNAIL&identifier=qortal_avatar&limit=0';
 		
 		// Make an AJAX request to the API endpoint
 		var xhttp = new XMLHttpRequest();
@@ -70,11 +70,11 @@
 						+ data[i].name
 						+ '">'
 						+ data[i].name
-						+ '</a><br /><a href="http://192.168.1.101:12391/arbitrary/THUMBNAIL/'
+						+ '</a><br /><a href="/arbitrary/THUMBNAIL/'
 						+ data[i].name
-						+ '/qortal_avatar?apiKey=TJEXadJqHLXeSeG9Dguqd3"><img style="width:200px;height:200px;" src="http://192.168.1.101:12391/arbitrary/THUMBNAIL/'
+						+ '/qortal_avatar"><img style="width:200px;height:200px;" src="/arbitrary/THUMBNAIL/'
 						+ data[i].name
-						+ '/qortal_avatar?apiKey=TJEXadJqHLXeSeG9Dguqd3"></a>';
+						+ '/qortal_avatar"></a>';
 				}
 				table.deleteRow(0);
 				var count = document.getElementById("myCount");
