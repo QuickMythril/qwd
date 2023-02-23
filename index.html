@@ -2,11 +2,19 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>JSON to Table</title>
+	<title>Qortal Website Directory</title>
 	<style>
+		@font-face {
+			font-family: Lexend;
+			src: url('Lexend-Regular.ttf') format('truetype');
+		}
 		body {
 			background-color: #0b305e;
 			color: #008fd5;
+			font-family: Lexend;
+		}
+		a:visited {
+			color: #586b8d;
 		}
 		table {
 			border-collapse: collapse;
@@ -18,6 +26,7 @@
 			color: #0b305e;
 		}
 		th {
+			background-color: #008fd5;
 			cursor: pointer;
 		}
 		th:hover {
@@ -36,7 +45,7 @@
 	</style>
 </head>
 <body>
-	<div id="myCount">You found Websites hosted live on QDN!</div><br />
+	<div id="myCount"><h2>You found Websites hosted live on QDN! - <a href="about.html">About QWD</a></h2></div><br />
 	<table id="myTable">
 		<thead>
 			<tr>
@@ -56,7 +65,8 @@
 	</table>
 
 	<script>
-		var notesLastUpdated = '2023-02-20';
+		var notesLastUpdated = '2023-02-23';
+		var apiCallUrl = 'http://192.168.1.101:12391/arbitrary/resources?service=WEBSITE&limit=0&includemetadata=true';
 		// Make an AJAX request to the API endpoint
 		var xhttp = new XMLHttpRequest();
 		xhttp.onreadystatechange = function() {
@@ -165,6 +175,7 @@
 						case 'AlphaX':
 						case 'Bago':
 						case 'Basic':
+						case 'Bester':
 						case 'Bored Ape Jason Crowe':
 						case 'breakfix':
 						case 'Carefree':
@@ -191,6 +202,7 @@
 						case 'milk':
 						case 'monion':
 						case 'PhotoShop':
+						case 'porn':
 						case 'Premiere':
 						case 'psychogenic':
 						case 'psychometrics':
@@ -209,6 +221,7 @@
 							notesCell.innerHTML = '{Empty}';
 							break;
 						// Web-based applications, utilities, games
+						case '.directory':
 						case 'ActofVision':
 						case 'Billiards':
 						case 'cnsr.lol':
@@ -356,17 +369,29 @@
 						// Adult content / Not safe for work
 						case 'fuckmo':
 							row.cells[0].style.backgroundColor = "lightcoral";
+							row.cells[4].style.color = row.style.Backgroundcolor;
+							row.cells[6].style.color = row.style.Backgroundcolor;
+							row.cells[4].innerHTML = "<u>" + row.cells[4].innerHTML + "</u>";
+							row.cells[6].innerHTML = "<u>" + row.cells[6].innerHTML + "</u>";
 							notesCell.innerHTML = '{Adult}';
+							break;
+						// Newly added Websites will not have specific notes
+						default:
+							notesCell.innerHTML = '(NEW)';
+							// Copy row to top and delete bottom
+							var toprow = table.insertRow(1);
+							toprow.innerHTML = row.innerHTML;
+							table.deleteRow(-1);
 
 						// https://www.w3schools.com/tags/ref_colornames.asp
 					}
 				}
 				table.deleteRow(-1);
 				var count = document.getElementById("myCount");
-				count.innerHTML = 'You found ' + data.length + ' Websites hosted live on QDN!  -  Notes last updated:  ' + notesLastUpdated;
+				count.innerHTML = '<h2>You found ' + data.length + ' Websites hosted live on QDN! - Notes last updated: ' + notesLastUpdated + ' - <a href="about.html">About QWD</a></h2>';
 			}
 		};
-		xhttp.open("GET", "/arbitrary/resources?service=WEBSITE&limit=0&includemetadata=true", true);
+		xhttp.open("GET", apiCallUrl, true);
 		xhttp.send();
 
 		// Function to sort the table by the selected column
@@ -383,24 +408,24 @@
 					var y = rows[i + 1].getElementsByTagName("td")[n];
 					if (dir == "asc") {
 						if (isNaN(x.innerHTML)) {
-							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-								shouldSwitch = true;
-								break;
-							}
-						} else {
-							if (Number(x.innerHTML) > Number(y.innerHTML)) {
-								shouldSwitch = true;
-								break;
-							}
-						}
-					} else if (dir == "desc") {
-						if (isNaN(x.innerHTML)) {
 							if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
 								shouldSwitch = true;
 								break;
 							}
 						} else {
 							if (Number(x.innerHTML) < Number(y.innerHTML)) {
+								shouldSwitch = true;
+								break;
+							}
+						}
+					} else if (dir == "desc") {
+						if (isNaN(x.innerHTML)) {
+							if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+								shouldSwitch = true;
+								break;
+							}
+						} else {
+							if (Number(x.innerHTML) > Number(y.innerHTML)) {
 								shouldSwitch = true;
 								break;
 							}

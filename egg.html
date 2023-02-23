@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Easter Egg</title>
+	<style>
+		@font-face {
+			font-family: Lexend;
+			src: url('Lexend-Regular.ttf') format('truetype');
+		}
+		body {
+			background-color: #0b305e;
+			color: #008fd5;
+			font-family: Lexend;
+		}
+		a:visited {
+			color: #586b8d;
+		}
+		table {
+			border-collapse: collapse;
+			width: 100%;
+		}
+		td {
+			text-align: left;
+			padding: 8px;
+			color: #0b305e;
+		}
+		tr:nth-child(even) {
+			background-color: #008fd5;
+		}
+		tr:nth-child(odd) {
+			background-color: #586b8d;
+		}
+	</style>
+</head>
+<body>
+	<div id="myCount"><h2>Congratulations! You found Avatars hosted live on QDN! - <a href="about.html">About QWD</a></h2></div><br />
+	<table id="myTable">
+		<tbody>
+			<!-- Table rows will be generated dynamically using JavaScript -->
+			<tr><td>Loading...</td></tr>
+		</tbody>
+	</table>
+
+	<script>
+		var notesLastUpdated = '2023-02-23';
+		
+		// Available values :
+		// AUTO_UPDATE, ARBITRARY_DATA, QCHAT_ATTACHMENT, WEBSITE, GIT_REPOSITORY, IMAGE, THUMBNAIL, QCHAT_IMAGE, VIDEO,
+		// AUDIO, QCHAT_AUDIO, QCHAT_VOICE, BLOG, BLOG_POST, BLOG_COMMENT, DOCUMENT, LIST, PLAYLIST, APP, METADATA, GIF_REPOSITORY
+		var apiCallUrl = 'http://192.168.1.101:12391/arbitrary/resources?service=THUMBNAIL&identifier=qortal_avatar&limit=0';
+		
+		// Make an AJAX request to the API endpoint
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				// Parse the response data as JSON
+				var data = JSON.parse(this.responseText);
+					
+				// Create the table rows using the response data
+				var table = document.getElementById("myTable");
+				for (var i = 0; i < data.length; i++) {
+					var j = (i % 5);
+					if (j == 0) {
+						var row = table.insertRow();
+					}
+					var imageCell = row.insertCell(j);
+					imageCell.innerHTML =
+						'<a href="qortal://WEBSITE/'
+						+ data[i].name
+						+ '">'
+						+ data[i].name
+						+ '</a><br /><a href="http://192.168.1.101:12391/arbitrary/THUMBNAIL/'
+						+ data[i].name
+						+ '/qortal_avatar?apiKey=TJEXadJqHLXeSeG9Dguqd3"><img style="width:200px;height:200px;" src="http://192.168.1.101:12391/arbitrary/THUMBNAIL/'
+						+ data[i].name
+						+ '/qortal_avatar?apiKey=TJEXadJqHLXeSeG9Dguqd3"></a>';
+				}
+				table.deleteRow(0);
+				var count = document.getElementById("myCount");
+				count.innerHTML = '<h2>Congratulations! You found ' + data.length + ' Avatars hosted live on QDN! - <a href="about.html">About QWD</a></h2>';
+			}
+		};
+		xhttp.open("GET", apiCallUrl, true);
+		xhttp.send();
+
+	</script>
+
+</body>
+</html>
+
